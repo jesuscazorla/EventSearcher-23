@@ -1,0 +1,63 @@
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background-color: var(--blue);
+  font-family: var(--titillium);
+  color: var(--white);
+  text-align: center;
+  padding: 30px;
+  padding-top: 10px;
+  position: relative;
+}
+
+.close-icon {
+  color: var(--blue-60);
+  cursor: pointer;
+  font-size: 30px;
+  align-self: flex-end;
+  margin-right: -20px;
+  margin-top: -10;
+  transition: color 0.1s ease-in-out;
+}
+
+.close-icon:hover {
+  color: var(--white);
+}
+
+h2 {
+  margin-bottom: 30px;
+}
+
+.dialog-info > span {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.dialog-info > p {
+  font-size: 18px;
+  max-width: 630px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.mat-mdc-raised-button:not(:disabled) {
+  color: var(--blue-60);
+  background-color: var(--blue-80);
+  width: 120px;
+}
+
+mat-icon {
+  margin-top: 2px;
+  margin-right: 5px;
+}
+

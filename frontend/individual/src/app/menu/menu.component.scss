@@ -1,0 +1,105 @@
+.sidenav-links {
+    width: 100px;
+    height: calc(100vh - 170px);
+    min-height: 450px;
+    padding: 30px 0;
+    border-radius: 12px;
+    background-color: var(--blue-80);
+    position: fixed;
+    top: 100px;
+    left: 40px;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.sidenav-links a {
+    position: relative;
+    padding: 10px;
+    width: 100%;
+    font-size: 18px;
+    color: var(--blue-60);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: background-color 0.2s ease;
+}
+
+.sidenav-links a:hover {
+    background-color: var(--blue-90);
+}
+
+.icon-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidenav-links mat-icon {
+    font-size: 30px;
+    height: auto;
+    width: auto;
+}
+
+.sidenav-links a > div:first-child {
+    position: absolute;
+}
+
+.router-link-active > div:first-child {
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    width: 8px;
+    height: 60px;
+    background: var(--orange-gradient);
+    border-radius: 0 10px 10px 0;
+}
+
+.router-link-active > div:nth-child(2) {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.router-link-active > div:nth-child(2) > div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(50% 50% at 50% 50%, rgba(251, 208, 59, 0.15) 0%, rgba(40, 46, 84, 0) 100%);
+    border-radius: 50%;
+}
+
+.router-link-active > span {
+    color: var(--white);
+    font-weight: 700;
+    position: relative;
+}
+
+.router-link-active mat-icon {
+    color: transparent;
+    background: var(--orange-gradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    position: relative;
+    z-index: 999;
+}
+
+.sidenav-content {
+    padding-top: 100px;
+    padding-left: 180px;
+    padding-right: 40px;
+    min-height: calc(100vh - 180px);
+    width: 100%;
+    margin-bottom: 50px;
+}

@@ -1,0 +1,15 @@
+<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
+    <mat-tab label="Events">
+        <div *ngFor="let event of eventsInPage">
+            <app-event [name]="event.name" [id]="event.id" [image]="event.image" [datetime_local]="event.datetime_local" [datetime_utc]="event.datetime_utc" [localtimezone]="event.localtimezone" [classification]="event.classification" [price]="event.price"></app-event>
+        </div>
+        <mat-paginator [length]="eventPage.total"
+        [pageSize]="eventPage.per_page"
+        [hidePageSize]="true"
+        (page)="changePage($event)"
+        aria-label="Select page">
+        </mat-paginator>
+    </mat-tab>
+    <mat-tab label="Attractions">b</mat-tab>
+    <mat-tab label="Venues">C</mat-tab>
+</mat-tab-group>

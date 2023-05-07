@@ -1,0 +1,37 @@
+<nav class="sidenav-links">
+    <a routerLink="/play" routerLinkActive="router-link-active">
+        <div></div>
+        <div class="icon-container">
+            <div></div>
+            <mat-icon>videogame_asset</mat-icon>
+        </div>
+        <span>Play</span>
+    </a>
+    <a routerLink="/cards" routerLinkActive="router-link-active">
+        <div></div>
+        <div class="icon-container">
+            <div></div>
+            <mat-icon>view_carousel</mat-icon>
+        </div>
+        <span>Cards</span>
+    </a>
+    <a routerLink="/decks" routerLinkActive="router-link-active">
+        <div></div>
+        <div class="icon-container">
+            <div></div>
+            <mat-icon>layers</mat-icon>
+        </div>
+        <span>Decks</span>
+    </a>
+    <a routerLink="/stats" routerLinkActive="router-link-active">
+        <div></div>
+        <div class="icon-container">
+            <div></div>
+            <mat-icon>bar_chart</mat-icon>
+        </div>
+        <span>Stats</span>
+    </a>
+</nav>
+<div class="sidenav-content">
+    <router-outlet></router-outlet>
+</div>

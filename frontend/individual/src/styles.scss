@@ -1,0 +1,179 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+:root {
+    --blue: #1a1f40;
+    --blue-90: #21264a;
+    --blue-80: #282e54;
+    --blue-70: #5f6892;
+    --blue-60: #8690bf;
+    --white: #ffffff;
+    --gray: #9092a4;
+    --orange-gradient: linear-gradient(180deg, #fbd03b, #fa7800);
+    --green-gradient: linear-gradient(90deg, #b3ffab, #12fff7);
+    --pink-gradient: linear-gradient(90deg, #fa669c, #e13387);
+    --purple-gradient: linear-gradient(90deg, #8257fc, #6736f1);
+    --background-opacity: #0f1025ed;
+    --card-opacity: #282e549b;
+    --titillium: "Titillium Web", Arial, Helvetica, sans-serif;
+    --krub: Krub, Arial, Helvetica, sans-serif;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:after,
+*:before {
+    box-sizing: inherit;
+    font-family: inherit;
+}
+
+body {
+  margin: 0;
+  font-family: "Titillium Web", Arial, Helvetica, sans-serif;
+  display: flex;
+  gap: 50px;
+}
+
+a {
+    text-decoration: none;
+}
+
+h2 {
+    font-size: 30px;
+    color: white;
+    font-weight: 700;
+    margin: 0;
+}
+
+h3 {
+    font-size: 25px;
+    color: white;
+    font-weight: 700;
+    margin: 0;
+}
+
+h4 {
+    color: white;
+    font-size: 20px;
+    font-weight: 400;
+    margin: 0;
+}
+
+.no-background {
+    background: none;
+}
+
+mat-toolbar.section-header {
+    justify-content: space-between;
+    background: var(--blue);
+    margin: 0;
+    padding: 0;
+    margin-bottom: 40px;
+    align-items: flex-start;
+}
+
+mat-icon {
+    width: auto !important;
+    height: auto !important;
+}
+
+app-root {
+    width: 100%;
+}
+
+.grid-list {
+    // width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
+    grid-gap: 30px;
+    // overflow-y: scroll;
+    justify-content: space-around;
+    align-content: start;
+}
+
+@media (max-width: 800px) {
+
+    .grid-list {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+
+    .grid-list {
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    }
+}
+
+
+.clickable {
+    cursor: pointer;
+}
+
+.forbidden {
+    cursor: not-allowed;
+}
+
+.clickable label{
+    pointer-events: none;
+}
+
+.mdc-dialog__surface {
+   background: none !important;
+}
+
+.game-container {
+  width: 100vw;
+  height: calc(100vh - 80px);
+  position: fixed;
+  bottom: 0;
+  background-color: var(--blue);
+  padding: 40px;
+  padding-top: 20px;
+  z-index: 1000;
+}
+
+*::-webkit-scrollbar {
+    width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background-color: var(--blue-80);
+}
+
+*::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: var(--blue-70);
+}
+
+app-deck {
+    width: 100%;
+}
+
+app-card {
+    width: 100%;
+}
+
+.mat-mdc-tab.mdc-tab {
+    height: 60px !important;
+    flex-grow: 0;
+    width: 300px;
+}
+
+@media (max-width: 800px) {
+    mat-toolbar.section-header {
+        flex-direction: column;
+        height: auto;
+        gap: 10px;
+    }
+}
