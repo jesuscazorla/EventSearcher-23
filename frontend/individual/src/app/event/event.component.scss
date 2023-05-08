@@ -217,10 +217,16 @@ body {
       font-family: "Poppins", sans-serif;
       position: absolute;
       bottom: 0;
-      right: 130px;
-      font-size: 10px;
+      left: 125px;
+      text-align: end;
+      font-size: 15px;
       font-weight: 700;
-      color: #fff;
+      color: white;
+      width: 275px;
+      align-self: flex-end;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
 
     .fa-arrow-right {

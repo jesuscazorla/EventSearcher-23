@@ -22,6 +22,33 @@ export class RemoteEventApiService implements EventService {
             map(data => data.meta));
     }
 
+    searchEvent(event : string, page: string): Observable<EventComponent[]>{
+        return this.remoteapi.get<any>(`${this.seatgeekURL}/events?client_id=${this.clientid}&page=${page}&q=${event}`).pipe(
+            map(data => data.events.map((event: any) => {
+                return {
+                    id: event.id,
+                    type: event.type,
+                    name: event.title,
+                    image: event.performers[0].image,
+                    datetime_utc : event.datetime_utc,
+                    datetime_local: event.datetime_local,
+                    localtimezone: event.venue.timezone,
+                    classification: event.genres?
+                    {
+                        name: event.genres[0].name,
+
+                    } : null,
+                    price: {
+                        average_price: event.stats.average_price,
+                        lowest_price: event.stats.lowest_price,
+                        highest_price: event.stats.highest_price
+
+                    }
+                   }
+                })
+                ));
+        }
+
     getEventsPage(page: string) : Observable<any>{
         return this.remoteapi.get<any>(`${this.seatgeekURL}/events?client_id=${this.clientid}&page=${page}`).pipe(
             map(data => data.events.map((event: any) => {

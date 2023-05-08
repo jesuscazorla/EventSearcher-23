@@ -36,6 +36,7 @@ import { EventService } from './services/event.service';
 import { MatPaginatorModule }   from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 
+
 @NgModule({
     declarations: [
         AppComponent,

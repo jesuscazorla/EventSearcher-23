@@ -4,6 +4,10 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 import { EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
+import { NavigationbarComponent } from 'app/navigationbar/navigationbar.component';
+import { RemoteEventApiService } from 'app/services/remote-event-api.service';
+
 
 @Component({
   selector: 'app-autocomplete',
@@ -21,6 +25,8 @@ export class AutocompleteComponent<T> {
 
   @Output() filteredOutput = new EventEmitter<T[]>();
 
+  constructor(){}
+
   filteredArray!: Observable<T[]>;
   filterPropertyKey!: keyof T;
   type!: string;
@@ -33,6 +39,7 @@ export class AutocompleteComponent<T> {
     );
     this.filteredOutput.emit(this.array);
   }
+
 
   private _filter(value: string): T[] {
     const filterValue = value.toLowerCase();
@@ -56,4 +63,9 @@ export class AutocompleteComponent<T> {
 
     return filtered;
   }
+
+  search() : void {
+    //this.api.searchEvent(this.control.value!, '0').subscribe(data => this.navigationBar.eventPage = data);
+  }
+
 }

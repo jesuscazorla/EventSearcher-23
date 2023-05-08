@@ -3,7 +3,7 @@
         <span>EventSearcher</span>
     </a>
     <app-autocomplete (filteredOutput)="getFiltered($event)" [array]="events" [control]="autocompleteControl"
-    [filterProperty]="filterProperty">></app-autocomplete>
+    [filterProperty]="filterProperty"></app-autocomplete>
     <div *ngIf="!register; else noRegister" class="user">
         <span>KAPUT1234</span>
         <div class="user-img">
