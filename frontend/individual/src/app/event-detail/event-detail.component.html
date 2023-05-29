@@ -1,36 +1,62 @@
-<div>
+<div id="main">
   <div id="mainImage">
     <img src="{{image}}">
-    <h1>{{name}}</h1>
-    <h2>{{type}}</h2>
   </div>
+  <div>
+    <div id="title">
+    <h1>{{name}}</h1>
+    <div class="tagContainer">
+    <div *ngFor="let genre of classification.genre" class="tag">
+        <p class="tagText">{{genre}}</p>
+    </div>
+    </div>
+    </div>
+    <div id="eventType">
+        <h2>Event Type: {{type}}</h2>
+    </div>
+ <div id="subMenu">
+    <div id="priceView">
+    <h2>Prices (USD) based on {{price.listing_count}} counts: </h2>
   <div id="prices">
     <div id="lowestPrice">
-      <h2>Lowest Price</h2>
-      <p>{{price.lowest_price}}</p>
+      <span>Lowest Price</span>
+      <p>${{price.lowest_price}}</p>
     </div>
     <div id="averagePrice">
-      <h2>Average Price</h2>
-      <p>{{price.average_price}}</p>
+      <span>Average Price</span>
+      <p>${{price.average_price}}</p>
     </div>
     <div id="highestPrice">
-      <h2>Highest Price</h2>
-      <p>{{price.highest_price}}</p>
+      <span>Highest Price</span>
+      <p>${{price.highest_price}}</p>
     </div>
     </div>
+</div>
 
   <div id="hours">
-    <h2>Local time - {{timezoneAbreviation}}</h2>
-    <p>{{datetime_local}} {{localhour}}</p>
-    <h2>Your local time - {{usertimezoneAbreviation}}</h2>
-    <p>{{datetime_utc}} {{userhour}}</p>
-  </div>
+    <div class="hour">
+        <div class="twoLinesTitle">
+            <h2>Local time</h2>
+            <h2>{{timezoneAbreviation}}</h2>
+        </div>
+        <div class="localHour">
+        <p>{{localdayname}} {{localday}}, {{localmonth}} {{localyear}}</p>
+        <p>{{localhour}}</p>
+        </div>
 
-  <div id= classification>
-    <h2>Classification</h2>
-    <div *ngFor="let genre of classification.genre">
-    <p>{{genre}}</p>
     </div>
+    <div class="hour">
+        <div class="twoLinesTitle">
+            <h2>Your local time</h2>
+            <h2>{{usertimezoneAbreviation}}</h2>
+        <div class="localHour">
+            <p>{{userdayname}} {{userday}}, {{usermonth}} {{useryear}}</p>
+            <p>{{userhour}}</p>
+        </div>
+    </div>
+  </div>
+</div>
 
   </div>
 </div>
+

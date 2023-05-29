@@ -52,3 +52,8 @@ body {
 .mat-mdc-dialog-container {
     --mdc-dialog-container-color: var(--blue);
 }
+.mat-mdc-form-field-has-icon-prefix .mat-mdc-text-field-wrapper {
+    padding-left: 0;
+    --mat-mdc-form-field-label-offset-x: -16px;
+    border-radius: 100px;
+}
