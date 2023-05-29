@@ -9,6 +9,7 @@ export class EventpriceComponent {
     @Input() average_price: number = 0;
     @Input() lowest_price: number = 0;
     @Input() highest_price: number = 0;
+    @Input() listing_count: number = 0;
 
 
 }

@@ -1,8 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import { LogInComponent } from './log-in/log-in.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { AppComponent } from './app.component';
+import { EventDetailComponent } from './event-detail/event-detail.component';
 
 
 const routes: Routes = [
+    { path: '', redirectTo: '', pathMatch: 'full' },
+    { path: 'sign-up', component: SignUpComponent},
+    { path: 'log-in',  component: LogInComponent},
+    { path: 'event/:id', component: EventDetailComponent},
+    {path: '**', pathMatch: 'full', component: NotFoundComponent}
 
 ];
 

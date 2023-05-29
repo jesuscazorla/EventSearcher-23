@@ -2,19 +2,12 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 :root {
-    --blue: #1a1f40;
-    --blue-90: #21264a;
-    --blue-80: #282e54;
-    --blue-70: #5f6892;
-    --blue-60: #8690bf;
+    --blue: #416cff;;
     --white: #ffffff;
     --gray: #9092a4;
-    --orange-gradient: linear-gradient(180deg, #fbd03b, #fa7800);
-    --green-gradient: linear-gradient(90deg, #b3ffab, #12fff7);
-    --pink-gradient: linear-gradient(90deg, #fa669c, #e13387);
-    --purple-gradient: linear-gradient(90deg, #8257fc, #6736f1);
-    --background-opacity: #0f1025ed;
-    --card-opacity: #282e549b;
+    --orange:  #FF4B2B;
+    --pink: #FF416C;
+    --pink-gradient: linear-gradient(to right, #FF4B2B, #FF416C);
     --titillium: "Titillium Web", Arial, Helvetica, sans-serif;
     --krub: Krub, Arial, Helvetica, sans-serif;
 }
@@ -147,13 +140,12 @@ app-root {
 }
 
 *::-webkit-scrollbar-track {
-    border-radius: 8px;
-    background-color: var(--blue-80);
+    background: var(--white);
 }
 
 *::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    background-color: var(--blue-70);
+
+    background: var(--pink-gradient);
 }
 
 app-deck {

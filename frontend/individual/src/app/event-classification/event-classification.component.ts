@@ -6,6 +6,6 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./event-classification.component.scss']
 })
 export class EventClassificationComponent {
-    @Input() name: string = '';
+    @Input() genre: string[] = [];
 
 }

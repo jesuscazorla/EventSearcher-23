@@ -1,0 +1,36 @@
+<div>
+  <div id="mainImage">
+    <img src="{{image}}">
+    <h1>{{name}}</h1>
+    <h2>{{type}}</h2>
+  </div>
+  <div id="prices">
+    <div id="lowestPrice">
+      <h2>Lowest Price</h2>
+      <p>{{price.lowest_price}}</p>
+    </div>
+    <div id="averagePrice">
+      <h2>Average Price</h2>
+      <p>{{price.average_price}}</p>
+    </div>
+    <div id="highestPrice">
+      <h2>Highest Price</h2>
+      <p>{{price.highest_price}}</p>
+    </div>
+    </div>
+
+  <div id="hours">
+    <h2>Local time - {{timezoneAbreviation}}</h2>
+    <p>{{datetime_local}} {{localhour}}</p>
+    <h2>Your local time - {{usertimezoneAbreviation}}</h2>
+    <p>{{datetime_utc}} {{userhour}}</p>
+  </div>
+
+  <div id= classification>
+    <h2>Classification</h2>
+    <div *ngFor="let genre of classification.genre">
+    <p>{{genre}}</p>
+    </div>
+
+  </div>
+</div>

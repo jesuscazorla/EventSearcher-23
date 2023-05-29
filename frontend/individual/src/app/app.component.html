@@ -1,8 +1,7 @@
 <div class="app-container">
-    <app-header></app-header>
-<app-navigationbar></app-navigationbar>
-
+    <app-header [eventlist]=eventList></app-header>
+    <app-event-list #eventList></app-event-list>
 </div>
 
-
+<router-outlet></router-outlet>
 

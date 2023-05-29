@@ -1,0 +1,30 @@
+<div *ngIf="!hideList">
+    <ng-container *ngIf="eventsInPage.length == 0; then noList; else listFound"></ng-container>
+    <ng-template #noList>
+        <app-search-not-found [eventList]="this"></app-search-not-found>
+    </ng-template>
+
+<ng-template #listFound>
+    <div *ngFor="let index of eventsInPage, let i = index, let even = even" class="row">
+        <div *ngIf="(i % 3) == 0">
+            <div *ngIf="eventsInPage[i] !== undefined" class="column">
+                <app-event [name]="eventsInPage[i].name" [id]="eventsInPage[i].id" [image]="eventsInPage[i].image" [price]="eventsInPage[i].price"></app-event>
+            </div>
+            <div *ngIf="eventsInPage[i+1] !== undefined" class="column">
+                <app-event [name]="eventsInPage[i+1].name" [id]="eventsInPage[i+1].id" [image]="eventsInPage[i+1].image" [price]="eventsInPage[i+1].price"></app-event>
+            </div>
+            <div *ngIf="eventsInPage[i+2] !== undefined" class="column">
+                <app-event [name]="eventsInPage[i+2].name" [id]="eventsInPage[i+2].id" [image]="eventsInPage[i+2].image"></app-event>
+            </div>
+        </div>
+    </div>
+    <mat-paginator [length]="eventPage.total"
+        [pageSize]="eventPage.per_page"
+        [hidePageSize]="true"
+        [pageIndex]="getPageIndex()"
+        (page)="changePage($event)"
+        aria-label="Select page">
+    </mat-paginator>
+</ng-template>
+</div>
+

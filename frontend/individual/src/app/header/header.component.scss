@@ -5,7 +5,7 @@
     justify-content: space-between;
     padding: 40px;
     width: 100%;
-    background-color: var(--blue);
+    background: linear-gradient(to left, #FF416C, #FF4B2B);
     top: 0;
     z-index: 999;
 }
@@ -27,8 +27,7 @@
 }
 
 .logo span:last-child {
-    color: transparent;
-    background-image: var(--orange-gradient);
+    color: white;
     background-clip: text;
     -webkit-background-clip: text;
 }
@@ -50,8 +49,14 @@
 }
 
 .links a:last-child {
-    background-image: var(--orange-gradient);
+    background-color: #416cff;
     padding: 10px 16px;
+    border-radius: 12px;
+}
+
+.links a:nth-last-child(2) {
+    background-color: #416cff;
+    padding: 10px 13px;
     border-radius: 12px;
 }
 
@@ -76,6 +81,18 @@
     justify-content: center;
 }
 
+mat-form-field {
+    margin-bottom: -24px;
+    width: 300px;
+  }
+
+  mat-icon {
+  cursor: pointer;
+  }
+  div.mat-mdc-text-field-wrapper {
+    background-color: black;
+  }
+
 .user-img img {
     width: 36px;
     height: 36px;
@@ -91,3 +108,50 @@
     justify-content: center;
     gap: 20px;
 }
+
+mat-form-field div.mat-mdc-text-field-wrapper {
+    border-radius: 10px;
+    background-color: #282e54 !important;
+    color: #818ebb;
+}
+
+.mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input {
+    color: white;
+}
+
+.mdc-text-field:not(.mdc-text-field--disabled)
+    .mdc-text-field__input::placeholder {
+    color: #818ebb;
+}
+
+.mdc-line-ripple {
+    visibility: hidden;
+}
+
+.mat-mdc-autocomplete-panel {
+    border-radius: 10px 10px 10px 10px !important;
+}
+
+.mat-mdc-autocomplete-panel {
+    background-color: #282e54;
+}
+
+span.mdc-list-item__primary-text {
+    color: white;
+}
+
+.mat-mdc-raised-button:not(:disabled) {
+    color: var(--blue-60) !important;
+    background-color: var(--blue-80) !important;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out !important;
+}
+
+.mat-mdc-raised-button:not(:disabled):hover {
+    color: var(--white) !important;
+}
+
+.mat-mdc-raised-button:disabled {
+    color: #8690BF50 !important;
+    background-color: #282E5450 !important;
+}
+

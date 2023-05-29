@@ -1,8 +1,8 @@
-<div class="container">
+<div class="container" (click)="redirect()">
     <div class="card">
         <h2>{{name}}</h2>
         <span class="material-icons fa-arrow-right" style="transform: rotateY(180deg);"> arrow_back </span>
-        <p *ngIf="showLowestPrice">From <span>${{price.lowest_price}}</span></p>
+        <p>From <span>${{checkedprice}}</span></p>
         <div class="pic" style= " background-image : url({{image}})"></div>
         <ul>
           <li></li>
