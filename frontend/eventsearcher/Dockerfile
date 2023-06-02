@@ -11,5 +11,6 @@ RUN npm run build --prod
 
 # Stage 2 - Run
 FROM nginx:alpine AS run
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /usr/app/dist/eventsearcher/ /usr/share/nginx/html
 EXPOSE 80
