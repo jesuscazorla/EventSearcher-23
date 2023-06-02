@@ -3,17 +3,18 @@ services:
   db:
     image: postgres
     restart: unless-stopped
+    container_name: db
     environment:
-      POSTGRES_DB: janken
-      POSTGRES_USER: janken
-      POSTGRES_PASSWORD: janken
+      POSTGRES_DB: eventsearcher
+      POSTGRES_USER: eventsearcher
+      POSTGRES_PASSWORD: eventsearcher
     ports:
       - "5432:5432"
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - ./db:/var/lib/postgresql/data
       
   frontend:
-    build: ./frontend/rps-101
+    build: ./frontend/eventsearcher
     ports:
       - "8080:80"
     restart: unless-stopped
