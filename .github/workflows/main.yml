@@ -33,3 +33,4 @@ jobs:
           folder: frontend/eventsearcher/dist/eventsearcher
           clean: true
           single-commit: true
+          

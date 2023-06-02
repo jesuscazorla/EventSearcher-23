@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "rps-101": {
+    "eventsearcher": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/rps-101",
+            "outputPath": "dist/eventsearcher",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -58,10 +58,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "rps-101:build:production"
+              "browserTarget": "eventsearcher:build:production"
             },
             "development": {
-              "browserTarget": "rps-101:build:development"
+              "browserTarget": "eventsearcher:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -69,7 +69,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "rps-101:build"
+            "browserTarget": "eventsearcher:build"
           }
         },
         "test": {
