@@ -1,0 +1,35 @@
+name: "Build and deploy to GitHub Pages Angular Project"
+
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: ./frontend/eventsearcher
+jobs:
+  deploy_ghpages:
+    name: Push to Github Pages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Use node 16
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npx ng build --base-href /Individual-23/ --configuration deployment
+      - name: path workaround
+        run: cp dist/eventsearcher/index.html dist/eventsearcher/404.html
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.2.5
+        with:
+          branch: gh-pages
+          folder: frontend/eventsearcher/dist/eventsearcher
+          clean: true
+          single-commit: true
