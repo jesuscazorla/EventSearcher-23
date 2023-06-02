@@ -1,122 +1,198 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { EventClassificationComponent } from 'app/event-classification/event-classification.component';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Location } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { DeleteDialogComponent } from 'app/delete-dialog/delete-dialog.component';
+import { EventListComponent } from 'app/event-list/event-list.component';
 import { EventpriceComponent } from 'app/eventprice/eventprice.component';
+import { EventApi } from 'app/models/EventApi';
 import { RemoteEventApiService } from 'app/services/remote-event-api.service';
+import { UserApiService } from 'app/services/user-api.service';
 import * as moment from 'moment-timezone';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-event-detail',
   templateUrl: './event-detail.component.html',
-  styleUrls: ['./event-detail.component.scss']
+  styleUrls: ['./event-detail.component.scss'],
+  animations: [
+    trigger('heartAnimation', [
+        state('empty', style({
+          fill: 'transparent',
+          stroke: 'red',
+        })),
+        state('filled', style({
+          fill: 'red',
+          stroke: 'none',
+        })),
+        transition('empty => filled', animate('200ms ease-in')),
+        transition('filled => empty', animate('200ms ease-out'))
+      ])
+]
+
 })
 export class EventDetailComponent implements OnInit {
-    datetime_utc: string = '';
-    datetime_local: string = '';
-    localtimezone: string = '';
-    classification: EventClassificationComponent = new EventClassificationComponent();
-    performers: any[] = [];
-    type: string = '';
-    name: string = '';
-    id: string = '';
-    image: string = '';
-    price: EventpriceComponent= new EventpriceComponent();
+
+    //API Data
+    event?: EventApi;
+    notFound: boolean = false;
+
+    //Timezones
     timezoneAbreviation: string = '';
     usertimezoneAbreviation: string = '';
 
+    //Event local date
     localhour: string= '';
     localday: string = '';
     localdayname: string = '';
     localmonth: string = '';
     localyear: string = '';
 
+    //User local date
     userhour: string = '';
     userday: string = '';
     userdayname: string = '';
     usermonth: string = '';
     useryear: string = '';
 
+    //URL For map
+    url = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8';
+    trusturl!: SafeResourceUrl;
+    mapLine: string = '';
+
+    //Currency
+    selected: string = 'US Dollar';
+    currenciesNames: string[] = ['US Dollar'];
+    currenciesValues: number[] = [1];
+    lowestPrice: string = '-';
+    highestPrice: string = '-';
+    averagePrice: string = '-';
+
+    //Arrays for day/months names
     private days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     private months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
+    userId?: Number;
+    userEvents: EventApi[] = [];
+    isLiked = false;
+    showDialog: boolean = false;
+    id: string = '';
 
-    constructor(private router: Router, private eventapi: RemoteEventApiService, private route: ActivatedRoute) { }
+    constructor(private router: Router, private eventapi: RemoteEventApiService, private route: ActivatedRoute,
+        private sanitizer: DomSanitizer, private userApi: UserApiService, private dialog: MatDialog, ) {}
 
     ngOnInit(): void {
 
-        const id = String(this.route.snapshot.paramMap.get('id'));
-        this.eventapi.getEvent(id).subscribe((data: any) => {
-            this.id = data.id;
-            this.name = data.title;
-            this.image = data.performers[0].image;
-            this.type = data.type;
-            this.datetime_utc = data.datetime_utc;
-            this.datetime_local = data.datetime_local;
-            this.localtimezone = data.venue.timezone;
-
-
-            this.price = {
-                lowest_price: (data.stats.lowest_price == undefined) ? '-' : data.stats.lowest_price,
-                highest_price: (data.stats.highest_price == undefined) ? '-' : data.stats.highest_price,
-                average_price: (data.stats.average_price == undefined) ? '-' : data.stats.average_price,
-                listing_count: (data.stats.listing_count == undefined) ? 0 : data.stats.listing_count
+        const sessionData = localStorage.getItem('mySession');
+        var sessiondata = sessionData ? JSON.parse(sessionData) : null;
+        if(sessiondata != null){
+        this.userId = sessiondata.userid;
+        this.userApi.getUser(this.userId!).subscribe((data: any) => {
+            if(data.event != null || data.event != undefined){
+                this.userEvents = data.event;
+                var item = data.event.find((e: EventApi) => e.apiEventId == parseInt(this.id));
+                this.isLiked = this.userEvents.includes(item);
             }
-            this.performers = data.performers;
-
-            this.getFixedTimeFromAPI();
-            this.getLocalDateFixed(new Date(this.datetime_local));
-            this.getUserDateFixed(new Date(this.datetime_utc));
-            this.getTypeFixed()
-            this.getClassifications(this.performers);
-
         });
+        }
 
+        const id = String(this.route.snapshot.paramMap.get('id'));
+        this.id = id;
+        this.eventapi.getEvent(id).subscribe((data: any) => {
+            if((data == null ||  data == undefined) && this.userId != null){
+                this.userApi.getEventById(id, this.userId!).subscribe((data: any) => {
+                    if(data == null || data == undefined){
+                        this.notFound = true;
+                    }else{
+                    this.event = data;
+                    this.dataImprovement();
+                    }
 
+                });
+
+            }else{
+                var classification: String[] = [];
+                for(let i = 0; i < data.taxonomies; i++){
+                    classification.push(data.taxonomies[i].name);
+                }
+                this.event = {
+                    apiEventId: data.id,
+                    name: data.title,
+                    image: data.performers[0].image,
+                    type: data.type,
+                    datetime_utc : data.datetime_utc,
+                    datetime_local : data.datetime_local,
+                    localtimezone : data.venue.timezone,
+                    classification: classification,
+                    price : {
+                        lowestPrice: (data.stats.lowest_price == undefined) ? 0 : data.stats.lowest_price,
+                        highestPrice: (data.stats.highest_price == undefined) ? 0 : data.stats.highest_price,
+                        averagePrice: (data.stats.average_price == undefined) ? 0 : data.stats.average_price,
+                        listingCount: (data.stats.listing_count == undefined) ? 0 : data.stats.listing_count
+                    },
+                    venue :{
+                        name: data.venue.name,
+                        city: data.venue.city,
+                        state: data.venue.state,
+                        country: data.venue.country,
+                        address: data.venue.extended_address,
+                        location: {
+                            lat: data.venue.location.lat,
+                            lon: data.venue.location.lon
+                        }
+                    }
+                }
+                this.dataImprovement();
+            }
+        });
+         for(let k of EventListComponent.currency){
+            this.currenciesNames.push(k[0]);
+            this.currenciesValues.push(k[1]);
+         }
     }
+    dataImprovement() {
+        this.getFixedTimeFromAPI();
+        this.getLocalDateFixed(new Date(this.event!.datetime_local));
+        this.getUserDateFixed(new Date(this.event!.datetime_utc));
+        this.getTypeFixed()
+
+        this.url = this.url.concat('&q=' + this.event!.venue.location.lat + ',' + this.event!.venue.location.lon);
+        this.trusturl= this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
+
+        this.event!.price.lowestPrice == 0 ? this.lowestPrice = '-' : this.lowestPrice = String(this.event!.price.lowestPrice);
+        this.event!.price.highestPrice == 0 ? this.highestPrice = '-' : this.highestPrice = String(this.event!.price.highestPrice);
+        this.event!.price.averagePrice == 0 ? this.averagePrice = '-' : this.averagePrice = String(this.event!.price.averagePrice);
+
+        this.mapLine = this.getMultilineTooltip();
+    }
+
+
+
     getFixedTimeFromAPI() {
-        this.timezoneAbreviation = moment().tz(this.localtimezone).zoneAbbr();
-        var aux = this.datetime_local.split('T');
+        this.timezoneAbreviation = moment().tz(this.event!.localtimezone).zoneAbbr();
+        var aux = this.event!.datetime_local.split('T');
         var userzone= Intl.DateTimeFormat().resolvedOptions().timeZone;
         var useroffset = moment().tz(userzone).utcOffset();
         this.usertimezoneAbreviation = moment().tz(userzone).zoneAbbr();
-        var xd = this.datetime_utc;
-        var aux2 = this.datetime_utc.split('T');
-        this.datetime_utc = aux2[0];
+        var xd = this.event!.datetime_utc;
+        var aux2 = this.event!.datetime_utc.split('T');
         this.userhour = moment(xd).add(useroffset,'minutes').format('HH:mm:ss');
-        this.datetime_local = aux[0];
         this.localhour = aux[1];
     }
-    getClassifications(performers: any[]) {
-        for (let k in this.performers){
-            if (this.performers[k].taxonomies != undefined){
-                for (let j in this.performers[k].taxonomies){
-                    var genre = this.performers[k].taxonomies[j].name;
-                    if(genre.indexOf('_') != -1){
-                        var genreSplit = genre.split('_');
-                        genre = genreSplit[0].charAt(0).toUpperCase() + genreSplit[0].slice(1) + ' ' + genreSplit[1].charAt(0).toUpperCase() + genreSplit[1].slice(1);
-                        }else{
-                            genre= genre.charAt(0).toUpperCase() + genre.slice(1);
-                        }
-                    if(!this.classification.genre.includes(genre)){
 
-                    this.classification.genre.push(genre);
-                    }
-                }
-            }
-
-        }
-    }
     getTypeFixed() {
-        if(this.type.indexOf('_') != -1){
-            var typeSplit = this.type.split('_');
-            this.type = typeSplit[0].charAt(0).toUpperCase() + typeSplit[0].slice(1) + ' ' + typeSplit[1].charAt(0).toUpperCase() + typeSplit[1].slice(1);
+        if(this.event!.type.indexOf('_') != -1){
+            var typeSplit = this.event!.type.split('_');
+            this.event!.type = typeSplit[0].charAt(0).toUpperCase() + typeSplit[0].slice(1) + ' ' + typeSplit[1].charAt(0).toUpperCase() + typeSplit[1].slice(1);
             }else{
-                this.type = this.type.charAt(0).toUpperCase() + this.type.slice(1);
+                this.event!.type = this.event!.type.charAt(0).toUpperCase() + this.event!.type.slice(1);
             }
     }
 
     getLocalDateFixed(localDate: Date) {
-            this.localday = this.datetime_local.charAt(8) + this.datetime_local.charAt(9);
+            this.localday = this.event!.datetime_local.charAt(8) + this.event!.datetime_local.charAt(9);
             this.localmonth = this.months[localDate.getMonth()];
             this.localyear = localDate.getFullYear().toString();
             this.localdayname = this.days[localDate.getDay()];
@@ -124,12 +200,73 @@ export class EventDetailComponent implements OnInit {
     }
 
      getUserDateFixed(userDate: Date) {
-        this.userday = this.datetime_local.charAt(8) + this.datetime_local.charAt(9);
+        this.userday = this.event!.datetime_local.charAt(8) + this.event!.datetime_local.charAt(9);
         this.usermonth = this.months[userDate.getMonth()];
         this.useryear = userDate.getFullYear().toString();
         this.userdayname = this.days[userDate.getDay()];
     }
 
+    getTagFixed(genre: string): string {
+        var result = '';
+        if(genre.indexOf('_') != -1){
+            var genreSplit = genre.split('_');
+            for(let word in genreSplit){
+                result += genreSplit[word].charAt(0).toUpperCase() + genreSplit[word].slice(1) + ' ';
+            }
+         }else{
+                result= genre.charAt(0).toUpperCase() + genre.slice(1);
+        }
+        return result;
+    }
+
+    getMultilineTooltip(): string {
+        return this.event!.venue.name + '\n' + this.event!.venue.address+ '\n' + this.event!.venue.country;;
+    }
+
+    changeCurrency(event: any){
+        var index = this.currenciesNames.indexOf(event.value);
+        var value = this.currenciesValues[index];
+        if(this.lowestPrice != '-'){
+            this.lowestPrice = (this.event!.price.lowestPrice * value).toFixed(2);
+        }
+        if(this.highestPrice != '-'){
+            this.highestPrice = (this.event!.price.highestPrice * value).toFixed(2);
+        }
+        if(this.averagePrice != '-'){
+            this.averagePrice = (this.event!.price.averagePrice * value).toFixed(2);
+        }
+    }
+
+    toggleLike() {
+        if(this.userId != undefined){
+            this.isLiked = !this.isLiked;
+            var event = this.event!;
+
+            if(this.isLiked){
+                this.userEvents.push(event);
+            }else{
+                var index = this.userEvents.findIndex(x => x.apiEventId == event.apiEventId);
+                console.log(index);
+                this.userEvents.splice(index,1);
+            }
+            this.userApi.updateEvents(this.userId,this.userEvents).subscribe((data: any) => {
+        });
+        }else{
+            const dialogRef = this.dialog.open(DeleteDialogComponent, {
+                autoFocus: false,
+            });
+            dialogRef.afterClosed().subscribe((confirm) => {
+                if (confirm) {
+                    this.router.navigate(['/sign-up']);
+                }
+            });
+
+
+            //POPUP LOGIN
+
+        }
+
+    }
+
 
 }
-

@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { User } from 'app/models/User';
+import { UserApiService } from 'app/services/user-api.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-sign-up',
@@ -20,7 +23,9 @@ export class SignUpComponent {
     hideC = true;
     goHome: boolean = false;
 
-    constructor(private router: Router){}
+    userExists = new Subject<boolean>();
+
+    constructor(private router: Router, private userApi: UserApiService){}
 
     getEmailErrorMessage() {
         if (this.email.hasError('required')) {
@@ -62,7 +67,16 @@ export class SignUpComponent {
     nextStep(){
         if(this.name.valid && this.email.valid){
             this.showError = false;
-        this.stepDone = true;
+            this.checkData(this.name.value!, this.email.value!);
+
+            this.userExists.subscribe(res =>{
+                if(!res){
+                    this.stepDone = true;
+               }else{
+                this.messageError = 'Username or email already exists. Try to login or use another username/email';
+                this.showError = true;
+                }
+            });
         }else if (!this.name.valid){
             this.messageError = 'Username must be 5 characters or more';
             this.showError = true;
@@ -71,24 +85,58 @@ export class SignUpComponent {
             this.showError = true;
         }
     }
+    checkData(name: string, email: string) {
+        this.userApi.getUserFromName(name).subscribe((data: any) => {
+            var user = data[0];
+            if(user != undefined){
+                this.userExists.next(true)
+            }else{
+                this.userApi.getUserFromEmail(email).subscribe((data: any) => {
+                    var useremail= data[0];
+                    if(useremail != undefined){
+                        this.userExists.next(true)
+                    }else{
+                        this.userExists.next(false);
+                    }
+                });
+
+            }
+        })
+
+    }
+
     backStep(){
         this.stepDone = false;
     }
 
     createUser(){
         if(this.password.valid && this.confirmPassword.valid && (this.confirmPassword.value == this.password.value)){
-              //IF COMPROBAR EN LA BASE DE DATOS
-              //SI SE PUEDE: INTRODUCIR Y ENVIAR AL LOGIN
-              //SI NO: MENSAJE DE ERROR DE QUE EL USUARIO YA EXISTE
+            var user: User = {
+                id : -1,
+                name: this.name.value!,
+                email: this.email.value!,
+                password: this.password.value!,
+                event: []
+            }
 
-              var aux = Math.random();
-                if(aux > 0.5){
+             this.userApi.createUser(user).subscribe({
+                next: () => {
                     this.showError = false;
                     this.router.navigateByUrl('/log-in');
-                }else{
+                },
+                error: () => {
                     this.showError = true;
-                    this.messageError = 'User or email already exists';
+                    this.messageError = 'Error while creating user';
+                },
+                complete: () => {
+                    this.showError = false;
                 }
+             })
+
+
+
+
+
 
         }else if (!this.password.valid || !this.confirmPassword.valid){
             this.messageError = 'Passwords does not match or must be 6 characters or more';

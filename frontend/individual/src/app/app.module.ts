@@ -25,7 +25,6 @@ import { SearchNotFoundComponent } from './search-not-found/search-not-found.com
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import {MatTabsModule} from '@angular/material/tabs';
 import { EventComponent } from './event/event.component';
-import { EventClassificationComponent } from './event-classification/event-classification.component';
 import { EventpriceComponent } from './eventprice/eventprice.component';
 import { EventListComponent } from './event-list/event-list.component';
 import { MockeventapiService } from './services/mockeventapi.service';
@@ -36,6 +35,15 @@ import { LogInComponent } from './log-in/log-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { EventDetailComponent } from './event-detail/event-detail.component';
+import { RemoteEventApiService } from './services/remote-event-api.service';
+import { RemoteScrapperService } from './services/remote-scrapper.service';
+import { ScrapperService } from './services/scrapper.service';
+import { MatSelectModule } from '@angular/material/select';
+import { SessionService } from './services/session.service';
+import { LikedEventsComponent } from './liked-events/liked-events.component';
+
+
+
 
 
 @NgModule({
@@ -45,13 +53,13 @@ import { EventDetailComponent } from './event-detail/event-detail.component';
         HeaderComponent,
         SearchNotFoundComponent,
         EventComponent,
-        EventClassificationComponent,
         EventpriceComponent,
         EventListComponent,
         LogInComponent,
         SignUpComponent,
         NotFoundComponent,
         EventDetailComponent,
+        LikedEventsComponent,
     ],
     imports: [
         BrowserModule,
@@ -77,11 +85,14 @@ import { EventDetailComponent } from './event-detail/event-detail.component';
         DragDropModule,
         MatTabsModule,
         MatPaginatorModule,
-        CommonModule
+        CommonModule,
+        MatSelectModule
     ],
     //Select between Mock and Remote APIs
     providers: [
-        { provide: EventService, useClass:MockeventapiService },
+        { provide: EventService, useClass: RemoteEventApiService},
+        { provide: ScrapperService, useClass: RemoteScrapperService},
+        SessionService,
         ],
     bootstrap: [AppComponent],
 })

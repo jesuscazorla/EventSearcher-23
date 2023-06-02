@@ -1,7 +1,5 @@
 import { Component, ElementRef, HostBinding, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { EventClassificationComponent } from 'app/event-classification/event-classification.component';
-import { EventpriceComponent } from 'app/eventprice/eventprice.component';
 
 
 @Component({
@@ -13,24 +11,23 @@ export class EventComponent implements OnInit {
     @Input() name: string = '';
     @Input() id: string = '';
     @Input() image: string = '';
-    @Input() price: EventpriceComponent= new EventpriceComponent();
+    @Input() lowestPrice?: number;
     checkedprice: string = '';
     showLowestPrice: boolean = true;
 
     constructor(private router: Router) { }
 
     ngOnInit(): void {
-
-        if(this.price.lowest_price == undefined){
+        if(this.lowestPrice == undefined){
             this.showLowestPrice = false;
         }else{
             this.showLowestPrice = true;
         }
 
-        if(this.price.lowest_price == undefined){
+        if(this.lowestPrice == undefined){
             this.checkedprice = '-';
         }else{
-            this.checkedprice = this.price.lowest_price.toString();
+            this.checkedprice = this.lowestPrice.toString();
         }
 
     }

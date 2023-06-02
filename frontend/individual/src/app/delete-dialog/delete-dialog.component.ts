@@ -14,7 +14,5 @@ export class DeleteDialogComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    public dialogRef: MatDialogRef<DeleteDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public confirm: boolean
   ) {}
 }

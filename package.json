@@ -3,6 +3,7 @@
     "@angular/cli": "^15.2.4"
   },
   "dependencies": {
+    "@types/googlemaps": "^3.43.3",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43"
   }

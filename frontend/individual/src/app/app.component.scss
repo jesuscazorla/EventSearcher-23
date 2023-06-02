@@ -4,3 +4,41 @@
     width: 100%;
     height: 100%;
 }
+
+.backArrow{
+    color: var(--pink);
+    font-size: 30px;
+}
+
+h3{
+    color: var(--pink);
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0;
+    margin-left: 10px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+#back{
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 800px;
+
+}
+
+#back:hover{
+    background-color: var(--pink);
+    transition: 0.5s;
+
+}
+#back:hover > *{
+    color: white;
+}
+

@@ -11,6 +11,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class RemoteApiService {
+
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
@@ -32,6 +33,11 @@ export class RemoteApiService {
   delete<T>(url: string): Observable<T> {
     return this.http.delete<T>(url).pipe(catchError(this.handleError<T>()));
   }
+
+  patch<T>(url: string, data: any): Observable<T> {
+    return this.http.patch<T>(url, data).pipe(catchError(this.handleError<any>()));
+  }
+
 
   private handleError<T>(result?: T) {
     return (error: any): Observable<T> => {

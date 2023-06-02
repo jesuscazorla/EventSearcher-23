@@ -1,62 +1,98 @@
+<ng-container *ngIf="notFound; then noList; else listFound"></ng-container>
+    <ng-template #noList>
+        <app-not-found [message]= "'event'"></app-not-found>
+    </ng-template>
+<ng-template #listFound>
 <div id="main">
+    <div id="horizontalMain">
   <div id="mainImage">
-    <img src="{{image}}">
+    <img src="{{event?.image}}">
   </div>
   <div>
     <div id="title">
-    <h1>{{name}}</h1>
-    <div class="tagContainer">
-    <div *ngFor="let genre of classification.genre" class="tag">
-        <p class="tagText">{{genre}}</p>
+    <h1>{{event?.name}}</h1>
+    <div class="heart-container">
+    <svg xmlns="http://www.w3.org/2000/svg" (click)="toggleLike()" width="40" height="40" viewBox="0 0 24 24">
+        <path [@heartAnimation]="isLiked ? 'filled' : 'empty'" stroke-width="2"
+        d="M12 21.35l-1.45-1.32C5.4 15.12 2 12.08 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.58-3.4 6.62-8.55 11.54L12 21.35z"/>
+    </svg>
     </div>
-    </div>
+
     </div>
     <div id="eventType">
-        <h2>Event Type: {{type}}</h2>
-    </div>
+        <h2>Event Type: {{event?.type}}</h2>
+        <div class="tagContainer">
+            <div *ngFor="let genre of event?.classification" class="tag">
+                <p class="tagText">{{genre}}</p>
+            </div>
+            </div>
+            </div>
  <div id="subMenu">
     <div id="priceView">
-    <h2>Prices (USD) based on {{price.listing_count}} counts: </h2>
+        <div id="currency">
+    <h2>Prices based on {{event?.price?.listingCount}} counts: </h2>
+    <mat-form-field>
+        <mat-select [value]="selected" (selectionChange)="changeCurrency($event)" md-container-class="mySelect" panelClass="dropDown-overlay">
+        <mat-option *ngFor="let name of currenciesNames" [value]="name">
+                {{name}}
+        </mat-option>
+        </mat-select>
+      </mat-form-field>
+        </div>
   <div id="prices">
     <div id="lowestPrice">
       <span>Lowest Price</span>
-      <p>${{price.lowest_price}}</p>
+      <p>{{lowestPrice}}</p>
     </div>
     <div id="averagePrice">
       <span>Average Price</span>
-      <p>${{price.average_price}}</p>
+      <p>{{averagePrice}}</p>
     </div>
     <div id="highestPrice">
       <span>Highest Price</span>
-      <p>${{price.highest_price}}</p>
+      <p>{{highestPrice}}</p>
     </div>
     </div>
 </div>
 
-  <div id="hours">
-    <div class="hour">
-        <div class="twoLinesTitle">
-            <h2>Local time</h2>
-            <h2>{{timezoneAbreviation}}</h2>
-        </div>
-        <div class="localHour">
-        <p>{{localdayname}} {{localday}}, {{localmonth}} {{localyear}}</p>
-        <p>{{localhour}}</p>
-        </div>
-
-    </div>
-    <div class="hour">
-        <div class="twoLinesTitle">
-            <h2>Your local time</h2>
-            <h2>{{usertimezoneAbreviation}}</h2>
-        <div class="localHour">
-            <p>{{userdayname}} {{userday}}, {{usermonth}} {{useryear}}</p>
-            <p>{{userhour}}</p>
-        </div>
-    </div>
-  </div>
 </div>
 
-  </div>
 </div>
+</div>
+<div id="location">
+    <div id="hours">
+        <div class="hour">
+            <div class="twoLinesTitle">
+                <h2>Local time</h2>
+                <h2>{{timezoneAbreviation}}</h2>
+            </div>
+            <div class="localHour">
+            <p>{{localdayname}} {{localday}}, {{localmonth}} {{localyear}}</p>
+            <p>{{localhour}}</p>
+            </div>
+
+        </div>
+        <div class="hour">
+            <div class="twoLinesTitle">
+                <h2>Your local time</h2>
+                <h2>{{usertimezoneAbreviation}}</h2>
+            <div class="localHour">
+                <p>{{userdayname}} {{userday}}, {{usermonth}} {{useryear}}</p>
+                <p>{{userhour}}</p>
+            </div>
+        </div>
+      </div>
+    </div>
+     <div id= "map">
+        <div>
+        <iframe [src]="trusturl" [matTooltip]="mapLine" matTooltipPosition="right"></iframe>
+        </div>
+        <div>
+    </div>
+</div>
+
+
+
+
+
 

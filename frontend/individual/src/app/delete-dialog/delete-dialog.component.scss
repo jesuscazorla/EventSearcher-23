@@ -4,7 +4,7 @@
   align-items: center;
   height: 100%;
   width: 100%;
-  background-color: var(--blue);
+  background: var(--pink-gradient);
   font-family: var(--titillium);
   color: var(--white);
   text-align: center;
@@ -51,8 +51,8 @@ h2 {
 }
 
 .mat-mdc-raised-button:not(:disabled) {
-  color: var(--blue-60);
-  background-color: var(--blue-80);
+  color: var(--white);
+  background-color: #416cff;
   width: 120px;
 }
 

@@ -32,9 +32,7 @@ export class RemoteEventApiService implements EventService {
                     id: event.id,
                     name: event.title,
                     image: event.performers[0].image,
-                    price: {
-                        average_price: event.stats.lowest_price,
-                    }
+                    lowestPrice: event.stats.lowest_price,
                    }
                 })
                 ));
@@ -51,9 +49,8 @@ export class RemoteEventApiService implements EventService {
                     id: event.id,
                     name: event.title,
                     image: event.performers[0].image,
-                    price: {
-                        lowest_price: event.stats.lowest_price,
-                   }
+                    lowestPrice: event.stats.lowest_price,
+
                 }
                 })
                 ));

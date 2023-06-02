@@ -14,11 +14,22 @@
         </mat-form-field>
     </div>
 
-    <div *ngIf="!register; else noRegister" class="user">
-        <span>KAPUT1234</span>
-        <div class="user-img">
-            <img src="assets/user.svg" alt="">
-        </div>
+    <div *ngIf="register; else noRegister" class="user">
+        <p>{{username}}</p>
+        <button mat-icon-button [matMenuTriggerFor]="menu" class="menu-button">
+            <mat-icon>person</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu" class="menu">
+            <button mat-menu-item routerLink="/liked-events">
+                <span class="menu-text">Liked Events</span>
+                <mat-icon class="menuIcon">favorite</mat-icon>
+            </button>
+            <button mat-menu-item (click)="logout()">
+                <span class="menu-text">Logout</span>
+                <mat-icon class="menuIcon">exit_to_app</mat-icon>
+            </button>
+          </mat-menu>
+
     </div>
     <ng-template #noRegister>
         <div class="links">

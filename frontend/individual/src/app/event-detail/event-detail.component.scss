@@ -2,17 +2,43 @@ h2{
     color: black;
 }
 
+img{
+    height: 400px;
+}
+
+//Image and info container
+#main{
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+    margin-top: 75px;
+    flex-direction: column;
+}
+#horizontalMain{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+//PRICES
 #prices{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-top: 20px;
     width:500px;
 
 }
 #prices span{
     font-size: 20px;
+}
+#priceView{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 #prices p{
     text-align: center;
@@ -27,6 +53,54 @@ h2{
 #prices #highestPrice{
     color: red;
 }
+
+#currency{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 50px;
+}
+#currency mat-form-field{
+    width: 250px;
+
+    text-align: center;
+}
+#currency .mat-mdc-form-field-has-icon-prefix .mat-mdc-text-field-wrapper{
+    width: 150px;
+    border-radius: 1000px;
+}
+
+::ng-deep{
+    .dropDown-overlay{
+       border-radius: 10px;
+       border: 1px solid var(--pink-gradient);
+       position:absolute;
+       top: 50px;
+    }
+    .mat-toolbar{
+        color: var(--pink);
+    }
+    .mdc-text-field--filled .mdc-line-ripple::after{
+        border-bottom-color: var(--pink);
+    }
+    .mdc-text-field--filled:not(.mdc-text-field--disabled):hover .mdc-line-ripple::before {
+        border-bottom-color: var(--pink);
+    }
+    .mat-primary .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) .mdc-list-item__primary-text {
+        color: var(--pink);
+    }
+    .mat-primary .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-minimal::after, .mat-primary .mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-minimal::after {
+        color: var(--pink);
+    }
+    .mat-mdc-form-field.mat-focused.mat-primary .mat-mdc-select-arrow {
+        color: var(--pink);
+    }
+
+
+  }
+
+
+//EVENT TYPE
 .tag{
     display: flex;
     align-items: center;
@@ -41,24 +115,18 @@ h2{
 }
 #eventType{
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
 }
 .tagContainer{
     display: flex;
     flex-direction: row;
+    margin-left: 30px;
 
 }
-#subMenu{
-    display: flex;
-    margin-top: 75px;
-    margin-left: 100px;
-    justify-content: space-between;
 
-}
-#priceView{
-    display: flex;
-    flex-direction: column;
-}
 .tagText{
     display: flex;
     -webkit-box-align: center;
@@ -66,6 +134,17 @@ h2{
     font-size: var(--font-size-7);
     padding: 0px 0.8rem;
 }
+
+//EVENT INFO
+#subMenu{
+    display: flex;
+    margin-top: 20px;
+    margin-left: 100px;
+    justify-content: center;
+
+}
+
+//TITLE
 #title{
     align-items: center;
     margin-left: 100px;
@@ -74,35 +153,20 @@ h2{
     width: 1000px;
     justify-content: center;
 }
+
+
+
 #title h1 {
     margin-right: 30px;
 }
 
-#main{
-    display: flex;
-    margin-left: auto;
-    margin-right: auto;
-    width: fit-content;
-    margin-top: 75px;
-}
 
-#mainImage h1{
-    margin-left: 100px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-      overflow: hidden;
-}
 
-#mainImage h2 {
-    margin-left: 20px;
-}
-img{
-    height: 400px;
-}
+//HOURS
 
 #hours{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 500px;
     justify-content: space-evenly;
 }
@@ -129,4 +193,48 @@ img{
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+//location container
+
+#location{
+    display: flex;
+    width: fit-content;
+    flex-direction: row;
+    margin-top: 20px;
+    gap: 250px;
+}
+
+#location h2{
+    margin-bottom: 0;
+}
+#locationText{
+    display: flex;
+    flex-direction: column;
+    margin-left: 50px;
+}
+
+iframe{
+    width: 750px;
+    height: 500px;
+}
+
+#locationList{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    margin-top: 20px;
+    width: 500px;
+}
+
+.heart-container.ng-tns-c24-2 {
+    margin-top: 10px;
+}
+
+::ng-deep .mdc-tooltip__surface{
+    min-width: none !important;
+    max-width: none !important;
+    white-space: pre-line !important;
+    line-height: 20px !important;
+    text-align: center !important;
 }

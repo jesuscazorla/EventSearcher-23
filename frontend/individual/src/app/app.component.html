@@ -1,5 +1,11 @@
 <div class="app-container">
     <app-header [eventlist]=eventList></app-header>
+    <div id="back" (click)="goBack()" *ngIf="!hideBack">
+        <mat-icon class="backArrow">arrow_back</mat-icon>
+        <h3>Go Back</h3>
+    </div>
+
+
     <app-event-list #eventList></app-event-list>
 </div>
 

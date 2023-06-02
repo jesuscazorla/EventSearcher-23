@@ -3,9 +3,11 @@ import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { NavigationEnd, Router } from '@angular/router';
 import { EventComponent } from 'app/event/event.component';
+import { Currency } from 'app/models/Currency';
 import { EventService } from 'app/services/event.service';
 import { MockeventapiService } from 'app/services/mockeventapi.service';
 import { RemoteEventApiService } from 'app/services/remote-event-api.service';
+import { ScrapperService } from 'app/services/scrapper.service';
 
 @Component({
   selector: 'app-event-list',
@@ -13,17 +15,17 @@ import { RemoteEventApiService } from 'app/services/remote-event-api.service';
   styleUrls: ['./event-list.component.scss']
 })
 export class EventListComponent implements OnInit {
-
-    @Input() placeholder: string = 'Search...';
-    @Input() control = new FormControl('');
     eventPage: any = [];
     eventsInPage: EventComponent[]  = [];
     page: string = '1';
     searchTerm: string = '';
     hideList: boolean = false;
+
     goHome: boolean = false;
 
-    constructor(private eventapi: RemoteEventApiService, private router: Router){
+    static currency: Map<string, number> = new Map<string, number>();
+
+    constructor(private eventapi: RemoteEventApiService, private router: Router, private scraper: ScrapperService){
         router.events.subscribe((val) => {
             if (val instanceof NavigationEnd){
                 if(val.url !== '/'){
@@ -42,7 +44,19 @@ export class EventListComponent implements OnInit {
         this.page = '1';
         this.showPage();
 
+        this.getCurrencyData();
     }
+
+    getCurrencyData() {
+
+        this.scraper.getCurrency().subscribe((data: any) => {
+            var currency = data;
+            for (let key in currency.currency) {
+                EventListComponent.currency.set(key, currency.currency[key]);
+            }
+        });
+    }
+
 
     changePage(pageEvent: PageEvent){
         var index = pageEvent.pageIndex;
