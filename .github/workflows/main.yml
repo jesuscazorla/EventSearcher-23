@@ -24,8 +24,6 @@ jobs:
         run: npm ci
       - name: Build
         run: npx ng build --base-href /Individual-23/ 
-      - name: path workaround
-        run: cp dist/eventsearcher/index.html dist/eventsearcher/404.html
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.2.5
         with:
