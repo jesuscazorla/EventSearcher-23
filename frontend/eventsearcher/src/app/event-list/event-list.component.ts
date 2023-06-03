@@ -74,7 +74,6 @@ export class EventListComponent implements OnInit {
 
      searchEvents(searchTerm: string){
         this.searchTerm = searchTerm;
-        console.log(this.searchTerm);
         this.eventapi.searchEvent(searchTerm).subscribe((eventPage: any) =>{
             this.eventPage = eventPage;
         });

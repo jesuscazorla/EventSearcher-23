@@ -36,10 +36,10 @@ export class RemoteEventApiService implements EventService {
                     localtimezone : data.venue.timezone,
                     classification: classification,
                     price : {
-                        lowestPrice: data.stats.lowest_price ?? data.stats.lowest_price,
-                        highestPrice: data.stats.highest_price ?? data.stats.highest_price,
-                        averagePrice: data.stats.average_price ?? data.stats.average_price,
-                        listingCount: data.stats.listing_count ?? data.stats.listing_count
+                        lowestPrice: (data.stats.lowest_price == undefined) ? 0 : data.stats.lowest_price,
+                        highestPrice: (data.stats.highest_price == undefined) ? 0 : data.stats.highest_price,
+                        averagePrice: (data.stats.average_price == undefined) ? 0 : data.stats.average_price,
+                        listingCount: (data.stats.listing_count == undefined) ? 0 : data.stats.listing_count
                     },
                     venue :{
                         name: data.venue.name,

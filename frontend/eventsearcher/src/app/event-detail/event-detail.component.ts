@@ -244,9 +244,6 @@ export class EventDetailComponent implements OnInit {
                 }
             });
 
-
-            //POPUP LOGIN
-
         }
 
     }

@@ -34,10 +34,6 @@ export class UserApiService{
             map(data => data.find((event: any) => event.apiEventId == eventId)
             )
         );
-
-
-
-
     }
 
     createUser(user : User) {
@@ -48,9 +44,10 @@ export class UserApiService{
         let user = {
             event: events
         }
-
-
         return this.remoteApi.patch(`${this.userURL}/${userId}`, user);
+    }
+    updateUserData(user: User) {
+        return this.remoteApi.patch(`${this.userURL}/${user.id}`, user);
 
     }
 

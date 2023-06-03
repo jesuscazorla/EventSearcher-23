@@ -132,12 +132,6 @@ export class SignUpComponent {
                     this.showError = false;
                 }
              })
-
-
-
-
-
-
         }else if (!this.password.valid || !this.confirmPassword.valid){
             this.messageError = 'Passwords does not match or must be 6 characters or more';
             this.showError = true;

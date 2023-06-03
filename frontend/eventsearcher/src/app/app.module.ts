@@ -40,6 +40,7 @@ import { ScrapperService } from './services/scrapper.service';
 import { MatSelectModule } from '@angular/material/select';
 import { SessionService } from './services/session.service';
 import { LikedEventsComponent } from './liked-events/liked-events.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 
@@ -59,6 +60,7 @@ import { LikedEventsComponent } from './liked-events/liked-events.component';
         NotFoundComponent,
         EventDetailComponent,
         LikedEventsComponent,
+        ProfileComponent,
     ],
     imports: [
         BrowserModule,

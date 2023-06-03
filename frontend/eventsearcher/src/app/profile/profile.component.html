@@ -1,0 +1,35 @@
+
+<ng-container *ngIf="notFound; then noList; else listFound"></ng-container>
+    <ng-template #noList>
+        <app-not-found [message]= "'settings'"></app-not-found>
+    </ng-template>
+<ng-template #listFound>
+<div class="container" id="container">
+    <div class="form-container sign-in-container">
+            <div class="form">
+                <div class="title">
+                <h1>Account Settings - {{user?.name}}</h1>
+                </div>
+                <mat-form-field>
+                    <mat-label>Enter your new email</mat-label>
+                    <input matInput [formControl]="email" required>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Enter your new password</mat-label>
+                    <input matInput [formControl]="password" [type]="hide ? 'password' : 'text'" required >
+                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                </mat-form-field>
+                <button id="saveChanges" (click)="saveChanges()">Save changes</button>
+                     <div *ngIf="showError">
+                        <p class="error">{{message}}</p>
+                     </div>
+                     <div *ngIf="showSuccess">
+                        <p class="success">Changed succesfuly</p>
+                </div>
+              </div>
+        </div>
+    </div>
+
+</ng-template>

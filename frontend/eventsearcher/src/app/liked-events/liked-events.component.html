@@ -1,4 +1,4 @@
-<ng-container *ngIf="!showEmpty; then noList; else listFound"></ng-container>
+<ng-container *ngIf="showEmpty; then noList; else listFound"></ng-container>
     <ng-template #noList>
         <app-not-found [message]= "'liked'"></app-not-found>
     </ng-template>

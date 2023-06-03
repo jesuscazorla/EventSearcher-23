@@ -37,7 +37,7 @@ export class LikedEventsComponent implements OnInit {
         this.userId = sessiondata.userid;
 
         this.userApi.getUser(this.userId).subscribe((data: any) => {
-            if(data.event != null || data.event != undefined){
+            if(data.event != null ){
             this.likedEvents = data.event;
             for(let i = 0; i < this.likedEvents.length; i++){
                 this.likedEvents[i].id = data.event[i].apiEventId;
@@ -45,11 +45,12 @@ export class LikedEventsComponent implements OnInit {
             this.page = '1';
             this.showPage();
             this.numItems = this.likedEvents.length;
-        }else{
-            this.showEmpty = true;
-
-        }
-
+            }else{
+                this.showEmpty = true;
+            }
+            if(this.likedEvents.length == 0){
+                this.showEmpty = true;
+            }
         });
 
 
