@@ -83,19 +83,7 @@ export class EventDetailComponent implements OnInit {
 
     ngOnInit(): void {
 
-        const sessionData = localStorage.getItem('mySession');
-        let sessiondata = sessionData ? JSON.parse(sessionData) : null;
-        if(sessiondata != null){
-        this.userId = sessiondata.userid;
-        this.userApi.getUser(this.userId!).subscribe((data: any) => {
-            if(data.event != null || data.event != undefined){
-                this.userEvents = data.event;
-                let item = data.event.find((e: EventApi) => e.apiEventId == parseInt(this.id));
-                this.isLiked = this.userEvents.includes(item);
-            }
-        });
-        }
-
+        this.getIfLiked();
         const id = String(this.route.snapshot.paramMap.get('id'));
         this.id = id;
         this.eventapi.getEvent(id).subscribe((data: any) => {
@@ -107,49 +95,34 @@ export class EventDetailComponent implements OnInit {
                     this.event = data;
                     this.dataImprovement();
                     }
-
                 });
-
             }else{
-                let classification: string[] = [];
-                for(let i = 0; i < data.taxonomies; i++){
-                    classification.push(data.taxonomies[i].name);
-                }
-                this.event = {
-                    apiEventId: data.id,
-                    name: data.title,
-                    image: data.performers[0].image,
-                    type: data.type,
-                    datetime_utc : data.datetime_utc,
-                    datetime_local : data.datetime_local,
-                    localtimezone : data.venue.timezone,
-                    classification: classification,
-                    price : {
-                        lowestPrice: data.stats.lowest_price ?? data.stats.lowest_price,
-                        highestPrice: data.stats.highest_price ?? data.stats.highest_price,
-                        averagePrice: data.stats.average_price ?? data.stats.average_price,
-                        listingCount: data.stats.listing_count ?? data.stats.listing_count
-                    },
-                    venue :{
-                        name: data.venue.name,
-                        city: data.venue.city,
-                        state: data.venue.state,
-                        country: data.venue.country,
-                        address: data.venue.extended_address,
-                        location: {
-                            lat: data.venue.location.lat,
-                            lon: data.venue.location.lon
-                        }
-                    }
-                }
+                this.event = data;
                 this.dataImprovement();
             }
-        });
+            }
+        );
+
          for(let k of EventListComponent.currency){
             this.currenciesNames.push(k[0]);
             this.currenciesValues.push(k[1]);
          }
     }
+    getIfLiked() {
+        const sessionData = localStorage.getItem('mySession');
+        let sessiondata = sessionData ? JSON.parse(sessionData) : null;
+        if(sessiondata != null){
+        this.userId = sessiondata.userid;
+        this.userApi.getUser(this.userId!).subscribe((data: any) => {
+            if(data.event != null || data.event != undefined){
+                this.userEvents = data.event;
+                let item = data.event.find((e: EventApi) => e.apiEventId == parseInt(this.id));
+                this.isLiked = this.userEvents.includes(item);
+            }
+        });
+    }
+    }
+
     dataImprovement() {
         this.getFixedTimeFromAPI();
         this.getLocalDateFixed(new Date(this.event!.datetime_local));
@@ -159,11 +132,25 @@ export class EventDetailComponent implements OnInit {
         this.url = this.url.concat(this.key +'&q=' + this.event!.venue.location.lat + ',' + this.event!.venue.location.lon);
         this.trusturl= this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
 
-        this.event!.price.lowestPrice == 0 ? this.lowestPrice = '-' : this.lowestPrice = String(this.event!.price.lowestPrice);
-        this.event!.price.highestPrice == 0 ? this.highestPrice = '-' : this.highestPrice = String(this.event!.price.highestPrice);
-        this.event!.price.averagePrice == 0 ? this.averagePrice = '-' : this.averagePrice = String(this.event!.price.averagePrice);
+        if(this.event!.price.lowestPrice == 0 ){
+            this.lowestPrice = '-';
+        }else{
+            this.lowestPrice = String(this.event!.price.lowestPrice);
+        }
+
+        if(this.event!.price.highestPrice == 0 ){
+            this.highestPrice = '-';
+        }else{
+            this.highestPrice = String(this.event!.price.highestPrice);
+        }
+
+        if(this.event!.price.averagePrice == 0 ){
+            this.averagePrice = '-';
+        }else{
+            this.averagePrice = String(this.event!.price.averagePrice);
 
         this.mapLine = this.getMultilineTooltip();
+        }
     }
 
 

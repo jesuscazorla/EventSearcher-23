@@ -9,8 +9,6 @@ export class NotFoundComponent implements OnInit {
 
     @Input() message: string = "";
 
-    constructor() {}
-
     ngOnInit(): void {
         console.log(this.message)
         if(this.message == ""){

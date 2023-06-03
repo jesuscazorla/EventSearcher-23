@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
-import { EventComponent } from 'app/event/event.component';
 import { Observable, of } from 'rxjs';
-import { EventService } from './event.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MockeventapiService {
-
-  constructor() {}
 
   getEvents(): Observable<any> {
     return of([

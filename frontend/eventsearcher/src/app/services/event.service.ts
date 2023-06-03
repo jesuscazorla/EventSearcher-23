@@ -6,5 +6,4 @@ export abstract class EventService {
 
     public abstract getEvents(): Observable<EventComponent[]>;
 
-  constructor() {}
 }

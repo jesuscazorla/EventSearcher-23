@@ -3,6 +3,7 @@ import {EventService} from './event.service';
 import { RemoteApiService } from './remote-api.service';
 import { EventComponent } from 'app/event/event.component';
 import { Observable, map } from 'rxjs';
+import { EventApi } from 'app/models/EventApi';
 
 @Injectable(
     {providedIn: 'root'}
@@ -18,9 +19,44 @@ export class RemoteEventApiService implements EventService {
             map(data => data.meta));
     }
 
-    getEvent(id: string): Observable<any>{
+    getEvent(id: string): Observable<EventApi>{
         return this.remoteapi.get<any>(`${this.seatgeekURL}/events/${id}?client_id=${this.clientid}`).pipe(
-            map(data => {return data;}));
+            map(data => {
+                let classification: string[] = [];
+                for(let i = 0; i < data.taxonomies; i++){
+                    classification.push(data.taxonomies[i].name);
+                }
+                return {
+                    apiEventId: data.id,
+                    name: data.title,
+                    image: data.performers[0].image,
+                    type: data.type,
+                    datetime_utc : data.datetime_utc,
+                    datetime_local : data.datetime_local,
+                    localtimezone : data.venue.timezone,
+                    classification: classification,
+                    price : {
+                        lowestPrice: data.stats.lowest_price ?? data.stats.lowest_price,
+                        highestPrice: data.stats.highest_price ?? data.stats.highest_price,
+                        averagePrice: data.stats.average_price ?? data.stats.average_price,
+                        listingCount: data.stats.listing_count ?? data.stats.listing_count
+                    },
+                    venue :{
+                        name: data.venue.name,
+                        city: data.venue.city,
+                        state: data.venue.state,
+                        country: data.venue.country,
+                        address: data.venue.extended_address,
+                        location: {
+                            lat: data.venue.location.lat,
+                            lon: data.venue.location.lon
+                        }
+                    }
+
+                }
+            })
+        );
+
 
         }
 

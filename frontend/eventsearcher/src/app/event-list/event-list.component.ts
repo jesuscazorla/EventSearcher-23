@@ -46,7 +46,7 @@ export class EventListComponent implements OnInit {
     getCurrencyData() {
 
         this.scraper.getCurrency().subscribe((data: any) => {
-            var currency = data;
+            let currency = data;
             for (let key in currency.currency) {
                 EventListComponent.currency.set(key, currency.currency[key]);
             }
@@ -55,7 +55,7 @@ export class EventListComponent implements OnInit {
 
 
     changePage(pageEvent: PageEvent){
-        var index = pageEvent.pageIndex;
+        let index = pageEvent.pageIndex;
         this.page = (index+1).toString();
         this.showPage();
     }
