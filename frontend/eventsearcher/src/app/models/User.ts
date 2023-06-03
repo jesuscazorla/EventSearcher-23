@@ -1,7 +1,7 @@
 import { EventApi } from "./EventApi";
 
 export interface User {
-    id: Number,
+    id: number,
     email: string;
     name: string;
     password: string;

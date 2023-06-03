@@ -8,7 +8,7 @@ import { EventService } from './event.service';
 })
 export class MockeventapiService {
 
-  constructor() { }
+  constructor() {}
 
   getEvents(): Observable<any> {
     return of([

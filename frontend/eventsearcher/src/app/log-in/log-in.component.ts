@@ -63,7 +63,7 @@ export class LogInComponent {
     }
     checkData(name: string, password: string) {
         this.userApi.getUserFromName(name).subscribe((data: any) => {
-            var user = data[0];
+            let user = data[0];
             if(user != undefined){
                 if(user.password == password){
                     this.user = {

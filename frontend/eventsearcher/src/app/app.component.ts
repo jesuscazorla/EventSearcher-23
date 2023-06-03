@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import { EventListComponent } from './event-list/event-list.component';
 import { Location } from '@angular/common';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute,Router } from '@angular/router';
 
 
 @Component({

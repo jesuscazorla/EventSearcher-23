@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { LogInComponent } from './log-in/log-in.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { AppComponent } from './app.component';
 import { EventDetailComponent } from './event-detail/event-detail.component';
 import { LikedEventsComponent } from './liked-events/liked-events.component';
 

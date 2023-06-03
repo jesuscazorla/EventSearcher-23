@@ -1,4 +1,3 @@
-import { EventpriceComponent } from "app/eventprice/eventprice.component";
 
 export interface EventApi {
     apiEventId: number;
@@ -25,6 +24,6 @@ export interface EventApi {
             lon: number;
     }
     }
-    classification: String[];
+    classification: string[];
 
 }

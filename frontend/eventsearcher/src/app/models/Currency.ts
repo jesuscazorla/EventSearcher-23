@@ -1,3 +1,3 @@
 export interface Currency {
-    currency: Map<String, Number>;
+    currency: Map<string, number>;
 }

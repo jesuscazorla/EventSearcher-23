@@ -87,12 +87,12 @@ export class SignUpComponent {
     }
     checkData(name: string, email: string) {
         this.userApi.getUserFromName(name).subscribe((data: any) => {
-            var user = data[0];
+            let user = data[0];
             if(user != undefined){
                 this.userExists.next(true)
             }else{
                 this.userApi.getUserFromEmail(email).subscribe((data: any) => {
-                    var useremail= data[0];
+                    let useremail= data[0];
                     if(useremail != undefined){
                         this.userExists.next(true)
                     }else{
@@ -111,7 +111,7 @@ export class SignUpComponent {
 
     createUser(){
         if(this.password.valid && this.confirmPassword.valid && (this.confirmPassword.value == this.password.value)){
-            var user: User = {
+            let user: User = {
                 id : -1,
                 name: this.name.value!,
                 email: this.email.value!,

@@ -6,7 +6,7 @@
 <div id="main">
     <div id="horizontalMain">
   <div id="mainImage">
-    <img src="{{event?.image}}">
+    <img src="{{event?.image}}" alt="event-image">
   </div>
   <div>
     <div id="title">
@@ -85,7 +85,7 @@
     </div>
      <div id= "map">
         <div>
-        <iframe [src]="trusturl" [matTooltip]="mapLine" matTooltipPosition="right"></iframe>
+        <iframe title="Address" [src]="trusturl" [matTooltip]="mapLine" matTooltipPosition="right"></iframe>
         </div>
         <div>
     </div>

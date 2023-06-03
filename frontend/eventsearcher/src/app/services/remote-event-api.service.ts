@@ -3,7 +3,6 @@ import {EventService} from './event.service';
 import { RemoteApiService } from './remote-api.service';
 import { EventComponent } from 'app/event/event.component';
 import { Observable, map } from 'rxjs';
-import { EventDetailComponent } from 'app/event-detail/event-detail.component';
 
 @Injectable(
     {providedIn: 'root'}

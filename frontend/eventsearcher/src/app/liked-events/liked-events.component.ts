@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EventListComponent } from 'app/event-list/event-list.component';
 import { EventComponent } from 'app/event/event.component';
 import { UserApiService } from 'app/services/user-api.service';
 
@@ -23,10 +21,6 @@ export class LikedEventsComponent implements OnInit {
     page?: string;
     eventsInPage: EventComponent[] = [];
 
-    //searchTerm: string;
-    //goHome: boolean;
-
-
 
     changePage(pageEvent: PageEvent): void {
         this.page = (pageEvent.pageIndex + 1).toString();
@@ -39,13 +33,13 @@ export class LikedEventsComponent implements OnInit {
 
     ngOnInit(): void {
         const sessionData = localStorage.getItem('mySession');
-        var sessiondata = sessionData ? JSON.parse(sessionData) : null;
+        let sessiondata = sessionData ? JSON.parse(sessionData) : null;
         this.userId = sessiondata.userid;
 
         this.userApi.getUser(this.userId).subscribe((data: any) => {
             if(data.event != null || data.event != undefined){
             this.likedEvents = data.event;
-            for(var i = 0; i < this.likedEvents.length; i++){
+            for(let i = 0; i < this.likedEvents.length; i++){
                 this.likedEvents[i].id = data.event[i].apiEventId;
             }
             this.page = '1';
@@ -63,8 +57,8 @@ export class LikedEventsComponent implements OnInit {
 
     showPage(): void {
         this.eventsInPage = [];
-        var index = (parseInt(this.page!) - 1) * 15;
-        for(var i = index; i < index + 15 && i < this.likedEvents.length; i++){
+        let index = (parseInt(this.page!) - 1) * 15;
+        for(let i = index; i < index + 15 && i < this.likedEvents.length; i++){
             this.eventsInPage.push(this.likedEvents[i]);
         }
 

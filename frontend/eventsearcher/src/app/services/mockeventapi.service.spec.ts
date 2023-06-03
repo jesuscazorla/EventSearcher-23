@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { MockeventapiService } from './mockeventapi.service';
 
 describe('MockeventapiService', () => {

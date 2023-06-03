@@ -1,11 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component,OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { NavigationEnd, Router } from '@angular/router';
 import { EventComponent } from 'app/event/event.component';
-import { Currency } from 'app/models/Currency';
-import { EventService } from 'app/services/event.service';
-import { MockeventapiService } from 'app/services/mockeventapi.service';
 import { RemoteEventApiService } from 'app/services/remote-event-api.service';
 import { ScrapperService } from 'app/services/scrapper.service';
 

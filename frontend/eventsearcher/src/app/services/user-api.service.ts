@@ -3,7 +3,6 @@ import { RemoteApiService } from './remote-api.service';
 import { Observable, map } from 'rxjs';
 import { User } from 'app/models/User';
 import { EventApi } from 'app/models/EventApi';
-import { event } from 'jquery';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +13,7 @@ export class UserApiService{
 
     private userURL="http://localhost:8081/api/users";
 
-    getUser(userId: Number): Observable<any> {
+    getUser(userId: number): Observable<any> {
         return this.remoteApi.get<any>(`${this.userURL}/${userId}`);
     }
 
@@ -30,11 +29,12 @@ export class UserApiService{
         );
     }
 
-    getEventById(eventId: string, userId: Number): Observable<any> {
+    getEventById(eventId: string, userId: number): Observable<any> {
         return this.remoteApi.get<any>(`${this.userURL}/${userId}/events`).pipe(
             map(data => data.find((event: any) => event.apiEventId == eventId)
             )
         );
+
 
 
 
@@ -44,8 +44,8 @@ export class UserApiService{
         return this.remoteApi.post<any>(`${this.userURL}`, user);
     }
 
-    updateEvents(userId: Number, events: EventApi[]) {
-        var user = {
+    updateEvents(userId: number, events: EventApi[]) {
+        let user = {
             event: events
         }
 

@@ -1,17 +1,14 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Location } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DeleteDialogComponent } from 'app/delete-dialog/delete-dialog.component';
 import { EventListComponent } from 'app/event-list/event-list.component';
-import { EventpriceComponent } from 'app/eventprice/eventprice.component';
 import { EventApi } from 'app/models/EventApi';
 import { RemoteEventApiService } from 'app/services/remote-event-api.service';
 import { UserApiService } from 'app/services/user-api.service';
 import * as moment from 'moment-timezone';
-import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-event-detail',
@@ -58,7 +55,8 @@ export class EventDetailComponent implements OnInit {
     useryear: string = '';
 
     //URL For map
-    url = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8';
+    url = 'https://www.google.com/maps/embed/v1/place?key=';
+    private key = 'AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8';
     trusturl!: SafeResourceUrl;
     mapLine: string = '';
 
@@ -74,7 +72,7 @@ export class EventDetailComponent implements OnInit {
     private days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     private months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-    userId?: Number;
+    userId?: number;
     userEvents: EventApi[] = [];
     isLiked = false;
     showDialog: boolean = false;
@@ -86,13 +84,13 @@ export class EventDetailComponent implements OnInit {
     ngOnInit(): void {
 
         const sessionData = localStorage.getItem('mySession');
-        var sessiondata = sessionData ? JSON.parse(sessionData) : null;
+        let sessiondata = sessionData ? JSON.parse(sessionData) : null;
         if(sessiondata != null){
         this.userId = sessiondata.userid;
         this.userApi.getUser(this.userId!).subscribe((data: any) => {
             if(data.event != null || data.event != undefined){
                 this.userEvents = data.event;
-                var item = data.event.find((e: EventApi) => e.apiEventId == parseInt(this.id));
+                let item = data.event.find((e: EventApi) => e.apiEventId == parseInt(this.id));
                 this.isLiked = this.userEvents.includes(item);
             }
         });
@@ -102,7 +100,7 @@ export class EventDetailComponent implements OnInit {
         this.id = id;
         this.eventapi.getEvent(id).subscribe((data: any) => {
             if((data == null ||  data == undefined) && this.userId != null){
-                this.userApi.getEventById(id, this.userId!).subscribe((data: any) => {
+                this.userApi.getEventById(id, this.userId).subscribe((data: any) => {
                     if(data == null || data == undefined){
                         this.notFound = true;
                     }else{
@@ -113,7 +111,7 @@ export class EventDetailComponent implements OnInit {
                 });
 
             }else{
-                var classification: String[] = [];
+                let classification: string[] = [];
                 for(let i = 0; i < data.taxonomies; i++){
                     classification.push(data.taxonomies[i].name);
                 }
@@ -127,10 +125,10 @@ export class EventDetailComponent implements OnInit {
                     localtimezone : data.venue.timezone,
                     classification: classification,
                     price : {
-                        lowestPrice: (data.stats.lowest_price == undefined) ? 0 : data.stats.lowest_price,
-                        highestPrice: (data.stats.highest_price == undefined) ? 0 : data.stats.highest_price,
-                        averagePrice: (data.stats.average_price == undefined) ? 0 : data.stats.average_price,
-                        listingCount: (data.stats.listing_count == undefined) ? 0 : data.stats.listing_count
+                        lowestPrice: data.stats.lowest_price ?? data.stats.lowest_price,
+                        highestPrice: data.stats.highest_price ?? data.stats.highest_price,
+                        averagePrice: data.stats.average_price ?? data.stats.average_price,
+                        listingCount: data.stats.listing_count ?? data.stats.listing_count
                     },
                     venue :{
                         name: data.venue.name,
@@ -158,7 +156,7 @@ export class EventDetailComponent implements OnInit {
         this.getUserDateFixed(new Date(this.event!.datetime_utc));
         this.getTypeFixed()
 
-        this.url = this.url.concat('&q=' + this.event!.venue.location.lat + ',' + this.event!.venue.location.lon);
+        this.url = this.url.concat(this.key +'&q=' + this.event!.venue.location.lat + ',' + this.event!.venue.location.lon);
         this.trusturl= this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
 
         this.event!.price.lowestPrice == 0 ? this.lowestPrice = '-' : this.lowestPrice = String(this.event!.price.lowestPrice);
@@ -172,19 +170,17 @@ export class EventDetailComponent implements OnInit {
 
     getFixedTimeFromAPI() {
         this.timezoneAbreviation = moment().tz(this.event!.localtimezone).zoneAbbr();
-        var aux = this.event!.datetime_local.split('T');
-        var userzone= Intl.DateTimeFormat().resolvedOptions().timeZone;
-        var useroffset = moment().tz(userzone).utcOffset();
+        let aux = this.event!.datetime_local.split('T');
+        let userzone= Intl.DateTimeFormat().resolvedOptions().timeZone;
+        let useroffset = moment().tz(userzone).utcOffset();
         this.usertimezoneAbreviation = moment().tz(userzone).zoneAbbr();
-        var xd = this.event!.datetime_utc;
-        var aux2 = this.event!.datetime_utc.split('T');
-        this.userhour = moment(xd).add(useroffset,'minutes').format('HH:mm:ss');
+        this.userhour = moment(this.event!.datetime_utc).add(useroffset,'minutes').format('HH:mm:ss');
         this.localhour = aux[1];
     }
 
     getTypeFixed() {
         if(this.event!.type.indexOf('_') != -1){
-            var typeSplit = this.event!.type.split('_');
+            let typeSplit = this.event!.type.split('_');
             this.event!.type = typeSplit[0].charAt(0).toUpperCase() + typeSplit[0].slice(1) + ' ' + typeSplit[1].charAt(0).toUpperCase() + typeSplit[1].slice(1);
             }else{
                 this.event!.type = this.event!.type.charAt(0).toUpperCase() + this.event!.type.slice(1);
@@ -207,9 +203,9 @@ export class EventDetailComponent implements OnInit {
     }
 
     getTagFixed(genre: string): string {
-        var result = '';
+        let result = '';
         if(genre.indexOf('_') != -1){
-            var genreSplit = genre.split('_');
+            let genreSplit = genre.split('_');
             for(let word in genreSplit){
                 result += genreSplit[word].charAt(0).toUpperCase() + genreSplit[word].slice(1) + ' ';
             }
@@ -224,8 +220,8 @@ export class EventDetailComponent implements OnInit {
     }
 
     changeCurrency(event: any){
-        var index = this.currenciesNames.indexOf(event.value);
-        var value = this.currenciesValues[index];
+        let index = this.currenciesNames.indexOf(event.value);
+        let value = this.currenciesValues[index];
         if(this.lowestPrice != '-'){
             this.lowestPrice = (this.event!.price.lowestPrice * value).toFixed(2);
         }
@@ -240,12 +236,12 @@ export class EventDetailComponent implements OnInit {
     toggleLike() {
         if(this.userId != undefined){
             this.isLiked = !this.isLiked;
-            var event = this.event!;
+            let event = this.event!;
 
             if(this.isLiked){
                 this.userEvents.push(event);
             }else{
-                var index = this.userEvents.findIndex(x => x.apiEventId == event.apiEventId);
+                let index = this.userEvents.findIndex(x => x.apiEventId == event.apiEventId);
                 console.log(index);
                 this.userEvents.splice(index,1);
             }
