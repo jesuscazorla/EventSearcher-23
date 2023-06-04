@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import {EventService} from './event.service';
 import { RemoteApiService } from './remote-api.service';
 import { EventComponent } from 'app/event/event.component';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
 import { EventApi } from 'app/models/EventApi';
+import { HttpResponse } from '@angular/common/http';
 
 @Injectable(
     {providedIn: 'root'}
@@ -18,12 +19,18 @@ export class RemoteEventApiService implements EventService {
         return this.remoteapi.get<any>(`${this.seatgeekURL}/events?client_id=${this.clientid}&per_page=15`).pipe(
             map(data => data.meta));
     }
-
-    getEvent(id: string): Observable<EventApi>{
+    getEvent(id: string): Observable<EventApi | undefined>{
         return this.remoteapi.get<any>(`${this.seatgeekURL}/events/${id}?client_id=${this.clientid}`).pipe(
+            catchError((error: HttpResponse<any>) => {
+                if(error.status === 404){
+                    return of(undefined);
+                }else{
+                    return of(undefined);
+                }
+            }),
             map(data => {
                 let classification: string[] = [];
-                for(let i = 0; i < data.taxonomies; i++){
+                for(let i = 0; i < data.taxonomies.length; i++){
                     classification.push(data.taxonomies[i].name);
                 }
                 return {
@@ -52,11 +59,9 @@ export class RemoteEventApiService implements EventService {
                             lon: data.venue.location.lon
                         }
                     }
-
                 }
-            })
-        );
 
+            }));
 
         }
 

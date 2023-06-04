@@ -87,7 +87,18 @@ export class EventDetailComponent implements OnInit {
         const id = String(this.route.snapshot.paramMap.get('id'));
         this.id = id;
         this.eventapi.getEvent(id).subscribe((data: any) => {
-            if((data == null ||  data == undefined) && this.userId != null){
+                this.event = data;
+                for(let i = 0; i < this.event!.classification.length; i++){
+                    this.event!.classification[i] = this.getTagFixed(this.event!.classification[i])
+                }
+                this.dataImprovement();
+
+            for(let k of EventListComponent.currency){
+                this.currenciesNames.push(k[0]);
+                this.currenciesValues.push(k[1]);
+            }
+        }, (error: any) => {
+                if(this.userId != null){
                 this.userApi.getEventById(id, this.userId).subscribe((data: any) => {
                     if(data == null || data == undefined){
                         this.notFound = true;
@@ -96,17 +107,9 @@ export class EventDetailComponent implements OnInit {
                     this.dataImprovement();
                     }
                 });
-            }else{
-                this.event = data;
-                this.dataImprovement();
             }
-            }
-        );
 
-         for(let k of EventListComponent.currency){
-            this.currenciesNames.push(k[0]);
-            this.currenciesValues.push(k[1]);
-         }
+        });
     }
     getIfLiked() {
         const sessionData = localStorage.getItem('mySession');

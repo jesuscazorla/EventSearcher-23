@@ -2,7 +2,8 @@
     <ng-template #noList>
         <app-not-found [message]= "'liked'"></app-not-found>
     </ng-template>
-<ng-template #listFound id="marginTop">
+<ng-template #listFound>
+<div id="marginTop">
 <div *ngFor="let index of eventsInPage, let i = index, let even = even" class="row">
         <div *ngIf="(i % 3) == 0">
             <div *ngIf="eventsInPage[i] !== undefined" class="column">
@@ -23,7 +24,9 @@
         (page)="changePage($event)"
         aria-label="Select page">
     </mat-paginator>
+</div>
 </ng-template>
+
 
 
 
